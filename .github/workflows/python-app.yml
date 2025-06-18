@@ -43,9 +43,7 @@ jobs:
     - name: Lint with flake8
       run: |
         pip install flake8
-        # Para de executar se houver erros de sintaxe
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # Avisos gerais (não param o build)
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       continue-on-error: false
     
@@ -84,7 +82,7 @@ jobs:
         python library_manager.py
     
     - name: Upload coverage HTML report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
       with:
         name: coverage-html-report
@@ -169,7 +167,7 @@ jobs:
         du -h dist/*
     
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: library-management-package
         path: dist/
@@ -202,38 +200,22 @@ jobs:
         
         print('=== Teste de Integração ===')
         
-        # Cenário completo de uso
         library = LibraryManager()
-        
-        # 1. Adicionar livros
         library.add_book('978-1', 'Livro 1', 'Autor 1', 2020, 2)
         library.add_book('978-2', 'Livro 2', 'Autor 2', 2021, 1)
-        
-        # 2. Registrar usuários
         library.register_user('001', 'João', 'joao@test.com')
         library.register_user('002', 'Maria', 'maria@test.com')
-        
-        # 3. Empréstimos
         library.borrow_book('001', '978-1')
         library.borrow_book('002', '978-2')
-        
-        # 4. Verificar estatísticas
         stats = library.get_library_stats()
         assert stats['active_loans'] == 2
         assert stats['available_books'] == 1
-        
-        # 5. Buscar livros
         results = library.search_books('Livro')
         assert len(results) == 2
-        
-        # 6. Devolver livro
         library.return_book('001', '978-1')
-        
-        # 7. Verificar estatísticas finais
         final_stats = library.get_library_stats()
         assert final_stats['active_loans'] == 1
         assert final_stats['available_books'] == 2
-        
         print('Todos os testes de integração passaram!')
         "
 
