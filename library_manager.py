@@ -249,7 +249,7 @@ def main():
     for key, value in stats.items():
         print(f"  {key}: {value}")
 
-    print(f"\nDevolvendo livro...")
+    print("\nDevolvendo livro...")
     print(library.return_book("001", "978-0-7475-3269-9"))
 
     print("\nDemonstração concluída!")
