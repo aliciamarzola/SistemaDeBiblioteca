@@ -11,3 +11,7 @@ name = "isort"
 
 [[transformers]]
 name = "black"
+
+[[analyzers]]
+name = "test-coverage"
+enabled = true
